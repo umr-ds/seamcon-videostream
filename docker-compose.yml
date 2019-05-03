@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  nginx:
+    image: 'bitnami/nginx:latest'
+    ports:
+      - '8080:8080'
+    volumes:
+      - ./dashloader:/app
+      - ./video:/app/dash
+      - ./experiment_params.js:/app/experiment_params.js
+    depends_on: 
+      - json-server
+
+  json-server:
+    image: vimagick/json-server
+    command: -w db.json
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./.~db.json:/app/.~db.json
+      - ./.~db.json:/app/db.json
+    restart: always
